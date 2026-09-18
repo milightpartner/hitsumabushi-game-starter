@@ -24,9 +24,9 @@ export GITHUB_PACKAGES_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
 npm install
 ```
 
-これだけで `@milightpartner/hitsumabushi-sdk` のインストールに加えて、AI開発スキル(`.claude/skills/hitsumabushi-game-developer/`)のセットアップと、SDK本体の同梱(`vendor/hitsumabushi-sdk.js`)が自動的に行われます(`postinstall`)。
+これだけで `@milightpartner/hitsumabushi-sdk`(`hitsumabushi` CLI)のインストールに加えて、AI開発スキル(`.claude/skills/hitsumabushi-game-developer/`)のセットアップが自動的に行われます(`postinstall`)。
 
-**`vendor/hitsumabushi-sdk.js` は必ずコミットしてください。** `.claude/skills/`と違ってこちらはローカル開発用のツールではなく、実際に本番へデプロイされる実体ファイルです。これが無いと`index.html`が本番環境でSDKを読み込めず、ゲームが一切反応しなくなります。
+**ゲーム本体(`index.html`)は公開URL `https://milightpartner.jp/sdk/hitsumabushi-sdk.js` から `<script>` タグでSDKを読み込みます。** ビルドもバンドラも、SDKのコピーをリポジトリにコミットする必要もありません。`npx hitsumabushi dev`(ローカル開発ハーネス)専用のパス `/__hitsumabushi_dev__/sdk.js` を指したままデプロイすると、本番では404になりゲームが一切反応しなくなるので注意してください。
 
 ## 2. AIと一緒にゲームを作る
 
@@ -65,5 +65,3 @@ npm run dev
 | `guide.md` | (任意)ゲーム解説記事の下書き。不要なら削除可 |
 | `CLAUDE.md` / `.cursorrules` | AIエディタ向けのガイド |
 | `.npmrc` | GitHub Packagesレジストリの設定 |
-| `vendor/hitsumabushi-sdk.js` | `npm install`時に自動生成されるSDK本体(要コミット、`.gitignore`対象外) |
-| `scripts/vendor-sdk.mjs` | 上記を生成するスクリプト。SDKを更新したら再実行する |
