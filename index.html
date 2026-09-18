@@ -54,15 +54,18 @@
 
   <!--
     @milightpartner/hitsumabushi-sdk をESM importで使う。
-    下のimport mapは `npm run dev`（= `hitsumabushi dev`）が配信するSDKを指しており、
-    これによりバンドラなしでこのHTMLをそのまま開発ハーネスで動かせる。
+    下のimport mapは `npm install` が自動生成する vendor/hitsumabushi-sdk.js
+    (実ファイル、要コミット)を指しており、`npm run dev`(ローカル開発ハーネス)
+    でも本番デプロイ先(Firebase Hosting/GitHub Pages等、どこでも)でも
+    バンドラなしでそのまま動く。SDKを更新したら `node scripts/vendor-sdk.mjs`
+    を再実行してこのファイルを最新化すること。
     Vite等のバンドラを導入する場合、bare importはビルド時に解決されるため
-    このimport mapは使われなくなる（削除してよい）。
+    このimport mapとvendor/は不要になる(削除してよい)。
   -->
   <script type="importmap">
   {
     "imports": {
-      "@milightpartner/hitsumabushi-sdk": "/__hitsumabushi_dev__/sdk.js"
+      "@milightpartner/hitsumabushi-sdk": "./vendor/hitsumabushi-sdk.js"
     }
   }
   </script>

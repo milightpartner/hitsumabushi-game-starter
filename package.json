@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "postinstall": "hitsumabushi init",
+    "postinstall": "hitsumabushi init && node scripts/vendor-sdk.mjs",
     "dev": "hitsumabushi dev"
   },
   "dependencies": {
