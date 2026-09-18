@@ -1,0 +1,27 @@
+# ひつまぶし (OmoshiroGamePortal) ゲーム開発ルール
+
+このリポジトリは `@milightpartner/hitsumabushi-sdk` を使ったOmoshiroGamePortal向けの対戦ゲームです。Portal本体のソースには一切アクセスしません。
+
+`npm install` を実行すると、より詳細なリファレンス(`.claude/skills/hitsumabushi-game-developer/SKILL.md` とその中の3種類のテンプレート、`node_modules/@milightpartner/hitsumabushi-sdk/docs/` 配下のAPI仕様・マニフェスト仕様・実装ガイドライン)が手に入ります。実装前に必ず目を通してください。以下はそのうち特に踏み外しやすい要点だけを抜粋したものです。
+
+## デザイン原則
+- コア体験は「10秒で始まるオンライン対戦」。1試合30秒〜2分程度で決着。
+- サイバーパンク/ネオン調のダークUI(ベース背景`#0a0b10`、アクセントカラーはシアン`#00f0ff`等)。
+- OBS配信対応: `body.transparent`クラスで背景を完全透過できるようにする。
+
+## SDK利用の必須ルール
+- `import { Hitsumabushi } from '@milightpartner/hitsumabushi-sdk'` でESM importする。ブラウザは`node_modules`を解決できないので、バンドラを使わない場合は`index.html`のimport map(`/__hitsumabushi_dev__/sdk.js`)をそのまま残す。
+- `onInitGame`は**リマッチ時にも再実行される**。盤面・スコア・タイマー・`isGameOver`フラグを毎回リセットすること。
+- 観戦者(`Hitsumabushi.isSpectator()`)は操作をロックし、観戦中UIを表示する。送信系API(`sendGameData`/`sendScoreUpdate`/`sendGameOver`)はSDK側でも自動的にブロックされる。
+- `sendGameData`は32KB/パケット・60パケット/秒の上限があり、超過分は無言で破棄される。毎フレーム送信せず間引くこと。
+- 勝敗確定後、他のUI更新関数が結果表示を上書きしないよう`if (isGameOver) return;`等でガードする。
+- `Hitsumabushi.isHost()`で「1箇所だけで行いたい処理」(タイマー進行・CPU対戦ロジック等)をガードする。
+
+## manifest.json
+ルート直下に配置。`gameId`/`title`/`players`(`min`/`max`/`type`/`allowCpuFill`)/`resultModel`(`type`/`allowTie`)を宣言する。詳細は`node_modules/@milightpartner/hitsumabushi-sdk/docs/game-manifest-spec.md`。
+
+## 動作確認
+`npm run dev`(`hitsumabushi dev`)でPortal本体無しに多人数対戦フロー(`INIT_GAME`〜`sendGameData`往復〜`sendGameOver`〜リマッチ、観戦者追加、OBSモード)を検証できる。ただしPortal本体との実際の接続(ルーム作成・ロビー・クロスオリジン)はこのハーネスでは検証できない。
+
+## SDK/Portal側の変更が必要だと感じた場合
+このリポジトリ内で代替実装・パッチを当てず、`milightpartner/OmoshiroGamePortal`へのissue起票を提案すること。

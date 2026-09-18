@@ -1,0 +1,13 @@
+{
+  "name": "hitsumabushi-game-starter",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "postinstall": "hitsumabushi init",
+    "dev": "hitsumabushi dev"
+  },
+  "dependencies": {
+    "@milightpartner/hitsumabushi-sdk": "^0.4.0"
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+dist/
+
+# Installed fresh by `npm install` (postinstall runs `hitsumabushi init`) - always
+# regenerated from the currently-installed SDK version, never hand-edited in place.
+.claude/
