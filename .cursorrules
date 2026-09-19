@@ -10,7 +10,7 @@
 - OBS配信対応: `body.transparent`クラスで背景を完全透過できるようにする。
 
 ## SDK利用の必須ルール
-- `import { Hitsumabushi } from '@milightpartner/hitsumabushi-sdk'` でESM importする。ブラウザは`node_modules`を解決できないので、バンドラを使わない場合は`index.html`のimport map(`./vendor/hitsumabushi-sdk.js`、`npm install`時に自動生成・要コミット)をそのまま残す。**`/__hitsumabushi_dev__/sdk.js`はローカル開発ハーネス専用パスで本番では404になる**ため、絶対にこちらへ書き換えないこと(実際にこれが原因で本番のゲームが一切反応しない不具合が発生した)。
+- `index.html`は公開URL `https://milightpartner.jp/sdk/hitsumabushi-sdk.js` を `<script>` タグで読み込み、グローバルの`Hitsumabushi`を使う。バンドラを使う場合のみ`import { Hitsumabushi } from '@milightpartner/hitsumabushi-sdk'`に置き換えてよい。**`/__hitsumabushi_dev__/sdk.js`はローカル開発ハーネス専用パスで本番では404になる**ため、絶対にこちらへ書き換えないこと(実際にこれが原因で本番のゲームが一切反応しない不具合が発生した)。
 - `onInitGame`は**リマッチ時にも再実行される**。盤面・スコア・タイマー・`isGameOver`フラグを毎回リセットすること。
 - 観戦者(`Hitsumabushi.isSpectator()`)は操作をロックし、観戦中UIを表示する。送信系API(`sendGameData`/`sendScoreUpdate`/`sendGameOver`)はSDK側でも自動的にブロックされる。
 - `sendGameData`は32KB/パケット・60パケット/秒の上限があり、超過分は無言で破棄される。毎フレーム送信せず間引くこと。

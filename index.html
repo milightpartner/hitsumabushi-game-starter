@@ -53,25 +53,15 @@
   </div>
 
   <!--
-    @milightpartner/hitsumabushi-sdk をESM importで使う。
-    下のimport mapは `npm install` が自動生成する vendor/hitsumabushi-sdk.js
-    (実ファイル、要コミット)を指しており、`npm run dev`(ローカル開発ハーネス)
-    でも本番デプロイ先(Firebase Hosting/GitHub Pages等、どこでも)でも
-    バンドラなしでそのまま動く。SDKを更新したら `node scripts/vendor-sdk.mjs`
-    を再実行してこのファイルを最新化すること。
-    Vite等のバンドラを導入する場合、bare importはビルド時に解決されるため
-    このimport mapとvendor/は不要になる(削除してよい)。
+    ひつまぶしSDKを公開URLから読み込む。ビルドもバンドラも不要で、
+    開発ハーネス(`npx hitsumabushi dev`)でも、静的ホストへ置いた本番でも、
+    この1行がそのまま動く。グローバルの `Hitsumabushi` として利用できる。
+    ※ npm + バンドラを使う場合は、代わりに
+       import { Hitsumabushi } from '@milightpartner/hitsumabushi-sdk';
+       と書いてこのscriptタグを削除してよい。
   -->
-  <script type="importmap">
-  {
-    "imports": {
-      "@milightpartner/hitsumabushi-sdk": "./vendor/hitsumabushi-sdk.js"
-    }
-  }
-  </script>
-  <script type="module">
-    import { Hitsumabushi } from '@milightpartner/hitsumabushi-sdk';
-
+  <script src="https://milightpartner.jp/sdk/hitsumabushi-sdk.js"></script>
+  <script>
     let myPlayerId = 'p1';
     let isSpectator = false;
 
